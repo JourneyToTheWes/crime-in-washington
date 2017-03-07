@@ -23,7 +23,7 @@ View(crime.pop.front)
 #Average of each crime committed within the years
 average.crime <- crime.pop.front %>% 
   group_by(county) %>% 
-  summarize(Average_Population = mean(TOTAL.POP),Average_Assult =mean(UCR_AG_ASSLT), Average_Arson = mean(UCR_ARSON), Average_Burglary= mean(UCR_BURGLARY), Average_Murder= mean(UCR_MURDER),
+  summarize(Average_Assult =mean(UCR_AG_ASSLT), Average_Arson = mean(UCR_ARSON), Average_Burglary= mean(UCR_BURGLARY), Average_Murder= mean(UCR_MURDER),
             Average_MVT =mean(UCR_MVT), Average_Rape =mean(UCR_RAPE), Average_Robbery =mean(UCR_ROBBERY), Average_Theft =mean(UCR_THEFT), Average_Total =mean(UCR_TOTAL))
 View(average.crime)
 
