@@ -6,12 +6,11 @@ shinyUI(fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      
-    )
-  ),
-  
-  mainPanel(h5("Crime in Washington is different in each county.")
+      h5("hello")
+    ),
     
+    mainPanel(h5("Crime in Washington is different in each county."),
+              
+    )
   )
-  
 ))
