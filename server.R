@@ -3,13 +3,12 @@ library(dplyr)
 
 ucr.wa.crime.data <- read.csv("ucr.wa.crime.data.csv")
 wa.average.crime <- read.csv("wa.average.crime.csv")
-
+View(ucr.wa.crime.data)
 server <-function(input, output){
   #Filter Dataset by county for table
   filtered <- reactive({
     data <- ucr.wa.crime.data %>% 
       filter(county == input$county)
-    return(data)
   })
   #Render a plotly display with boxplot to display min and max for each crime committed in each county
   output$plot <- renderPlotly({
@@ -37,20 +36,16 @@ server <-function(input, output){
     }
   })
   
-  #Render Text for chosen County
-  output$county <- renderText({
-    filtered()
-  })
+
   
   #Create Table
   output$table <- renderDataTable({
-    output$mytable <- renderText(input$county)
     return(filtered())
   }) 
   
   
 }
-
+shinyApp(ui=shinyUI(ui),server=shinyServer(server))
 
 
 

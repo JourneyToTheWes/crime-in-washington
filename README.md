@@ -5,3 +5,5 @@ The data the group extracted is from the Data.gov website. This dataset displays
 Source: https://catalog.data.gov/dataset/washington-state-criminal-justice-data-book/resource/ee04f2a9-d77a-4bf8-bb70-32dcfdbfeae7
 
 Collaborators: Calvin Chen, Wesley Wei, Josh Huang, Carlos Silva
+
+Due: March 9 2017
