@@ -2,6 +2,7 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
+library(plotly)
 
 ucr.wa.crime.data <- read.csv("data/ucr.wa.crime.data.csv")
 wa.average.crime <- read.csv("data/wa.average.crime.csv")
@@ -9,7 +10,26 @@ wa.average.crime <- read.csv("data/wa.average.crime.csv")
 shinyServer(
   
   function(input, output) {
-    output$bar <- renderPlot({
+    output$bar <- renderPlotly({
+      ucr.wa.crime.condensed.data <- select(ucr.wa.crime.data, year, county, UCR_AG_ASSLT, UCR_ARSON,
+                                            UCR_BURGLARY, UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY,
+                                            UCR_THEFT)
+      ucr.wa.crime.condensed.data.1 <- filter(ucr.wa.crime.condensed.data, ucr.wa.crime.condensed.data$county == input$county)
+      
+      ucr.wa.crime.condensed.data.2 <- filter(ucr.wa.crime.condensed.data.1, ucr.wa.crime.condensed.data.1$year == input$year)
+      
+      ucr.wa.crime.condensed.data.3 <- select(ucr.wa.crime.condensed.data.2, UCR_AG_ASSLT, UCR_ARSON, UCR_BURGLARY,
+                                              UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY, UCR_THEFT)
+      
+      pie.data <- gather(ucr.wa.crime.condensed.data.3, key = type.of.crime, value = crimes)
+      
+      bp <- ggplot(data = pie.data) +
+        aes(x = type.of.crime, y = crimes, fill = type.of.crime) +
+        geom_bar(width = 1, stat = "identity")
+      bp + coord_flip() + xlab("Type of Crime") + ylab("Crime Amount")
+    })
+    
+    output$pie <- renderPlotly({
         ucr.wa.crime.condensed.data <- select(ucr.wa.crime.data, year, county, UCR_AG_ASSLT, UCR_ARSON,
                                               UCR_BURGLARY, UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY,
                                               UCR_THEFT)
@@ -22,17 +42,13 @@ shinyServer(
         
         pie.data <- gather(ucr.wa.crime.condensed.data.3, key = type.of.crime, value = crimes)
         
-        bp <- ggplot(data = pie.data) +
-          aes(x = "", y = crimes, fill = type.of.crime) +
-          geom_bar(width = 1, stat = "identity")
-          scale_color_brewer(palette = "set3")
-        bp 
-        pie <- bp + coord_polar("y", start = 0, direction = -1) + xlab('Crime Amount') +
-               ylab('Type of Crime') + labs(title = "Crime Rate for Individual County and Year", align = "center")
-        pie
-        
-        
-      
+        p <- plot_ly(pie.data, labels = ~type.of.crime, values = ~crimes, type = 'pie',
+                     marker = list(line = list(color = '#FFFFFF', width = 0.5)),
+                     insidetextfont = list(color = '#FFFFFF'),
+                     textinfo = 'value+percent') %>%
+          layout(title = 'Crime Rate for Individual County and Year',
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+                 yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
     })
   }
 )
