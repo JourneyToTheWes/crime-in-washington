@@ -2,31 +2,37 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
-View(mpg)
+
 ucr.wa.crime.data <- read.csv("data/ucr.wa.crime.data.csv")
 wa.average.crime <- read.csv("data/wa.average.crime.csv")
-View(ucr.wa.crime.data)
-ucr.wa.crime.condensed.data <- select(ucr.wa.crime.data, X, year, county, UCR_AG_ASSLT, UCR_ARSON,
-                                      UCR_BURGLARY, UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY,
-                                      UCR_THEFT, UCR_TOTAL)
-View(ucr.wa.crime.condensed.data)
-ucr.wa.crime.condensed.data.1 <- filter(ucr.wa.crime.condensed.data, ucr.wa.crime.condensed.data$X == "1")
-View(ucr.wa.crime.condensed.data.1)
-ucr.wa.crime.condensed.data.1.extra <- select(ucr.wa.crime.condensed.data.1, UCR_AG_ASSLT, UCR_ARSON, UCR_BURGLARY,
-                                              UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY, UCR_THEFT, UCR_TOTAL)
-colnames(ucr.wa.crime.condensed.data.1)
-pie.data <- gather(ucr.wa.crime.condensed.data.1.extra, key = type.of.crime, value = crimes)
-View(pie.data)
+
 shinyServer(
   
   function(input, output) {
     output$bar <- renderPlot({
-      #pie(ucr.wa.crime.condensed.data.1.extra, labels = colnames(ucr.wa.crime.condensed.data.1.extra), 
-      #    fill = rainbow(length(ucr.wa.crime.condensed.data.1.extra)))
-      p <- ggplot(data = pie.data) +
-        aes(x = type.of.crime, y = crimes) +
-        geom_bar(stat = "identity")
-      p + coord_flip()
+        ucr.wa.crime.condensed.data <- select(ucr.wa.crime.data, year, county, UCR_AG_ASSLT, UCR_ARSON,
+                                              UCR_BURGLARY, UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY,
+                                              UCR_THEFT)
+        ucr.wa.crime.condensed.data.1 <- filter(ucr.wa.crime.condensed.data, ucr.wa.crime.condensed.data$county == input$county)
+
+        ucr.wa.crime.condensed.data.2 <- filter(ucr.wa.crime.condensed.data.1, ucr.wa.crime.condensed.data.1$year == input$year)
+        
+        ucr.wa.crime.condensed.data.3 <- select(ucr.wa.crime.condensed.data.2, UCR_AG_ASSLT, UCR_ARSON, UCR_BURGLARY,
+                                                      UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY, UCR_THEFT)
+        
+        pie.data <- gather(ucr.wa.crime.condensed.data.3, key = type.of.crime, value = crimes)
+        
+        bp <- ggplot(data = pie.data) +
+          aes(x = "", y = crimes, fill = type.of.crime) +
+          geom_bar(width = 1, stat = "identity")
+          scale_color_brewer(palette = "set3")
+        bp 
+        pie <- bp + coord_polar("y", start = 0, direction = -1) + xlab('Crime Amount') +
+               ylab('Type of Crime') + labs(title = "Crime Rate for Individual County and Year", align = "center")
+        pie
+        
+        
+      
     })
   }
 )
