@@ -9,6 +9,9 @@ wa.average.crime <- read.csv("data/wa.average.crime.csv")
 wa.average.select.crime<- select(wa.average.crime, Average_Population,Average_Assult,
                                  Average_Arson, Average_Burglary, Average_Murder, Average_MVT, 
                                  Average_Rape, Average_Robbery, Average_Theft)
+ucr.wa.crime.condensed.data <- select(ucr.wa.crime.data, year, county, UCR_AG_ASSLT, UCR_ARSON,
+                                      UCR_BURGLARY, UCR_MURDER, UCR_MVT, UCR_RAPE, UCR_ROBBERY,
+                                      UCR_THEFT)
 
 ui <- fluidPage(
   #Title Panel

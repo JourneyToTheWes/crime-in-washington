@@ -1,0 +1,10 @@
+name: crime-in-washington
+title: crime-in-washington
+account: journeytothewes
+server: shinyapps.io
+appId: 162507
+bundleId: 740370
+url: https://journeytothewes.shinyapps.io/crime-in-washington/
+when: 1489076906.29816
+asMultiple: FALSE
+asStatic: FALSE
