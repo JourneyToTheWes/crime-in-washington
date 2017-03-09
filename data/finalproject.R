@@ -11,10 +11,14 @@ crime.stats <- read.csv("wastate.csv")
 basic.crime.stats <- select(crime.stats, year, county, POP_F_TOTAL, POP_M_TOTAL, 13:213)
 #Filters out years from 1990-1999
 filter.years <- basic.crime.stats[!grepl("199", basic.crime.stats$year),]
+filter.years2012 <- filter.years[!grepl("2012", filter.years$year),]
+filter.years2013 <- filter.years2012[!grepl("2013", filter.years2012$year),]
+filter.years.removed <- filter.years2013[!grepl("2014", filter.years2013$year),]
+
 #Sum of Population Population - MAY CHECK UP ON THIS
-filter.years <- mutate(filter.years, Total.Pop = POP_F_TOTAL + POP_M_TOTAL)
+new.filter.years <- mutate(filter.years.removed, Total.Pop = POP_F_TOTAL + POP_M_TOTAL)
 #Select total crimes under UCR - United Crime Report
-crime.category <- select(filter.years, year, county, POP_F_TOTAL, POP_M_TOTAL,UCR_AG_ASSLT,UCR_ARSON,UCR_BURGLARY,UCR_MURDER,UCR_MVT,UCR_RAPE,UCR_ROBBERY,UCR_THEFT,UCR_TOTAL)
+crime.category <- select(new.filter.years, year, county, POP_F_TOTAL, POP_M_TOTAL,UCR_AG_ASSLT,UCR_ARSON,UCR_BURGLARY,UCR_MURDER,UCR_MVT,UCR_RAPE,UCR_ROBBERY,UCR_THEFT,UCR_TOTAL)
 filter <- mutate(crime.category, TOTAL.POP = POP_F_TOTAL + POP_M_TOTAL)
 #Brings total.pop to front
 crime.pop.front <- select(filter, year, county, POP_F_TOTAL, POP_M_TOTAL, TOTAL.POP,UCR_AG_ASSLT,UCR_ARSON,UCR_BURGLARY,UCR_MURDER,UCR_MVT,UCR_RAPE,UCR_ROBBERY,UCR_THEFT,UCR_TOTAL)
@@ -26,6 +30,7 @@ average.crime <- crime.pop.front %>%
   summarize(Average_Population =mean(TOTAL.POP),Average_Assult =mean(UCR_AG_ASSLT), Average_Arson = mean(UCR_ARSON), Average_Burglary= mean(UCR_BURGLARY), Average_Murder= mean(UCR_MURDER),
             Average_MVT =mean(UCR_MVT), Average_Rape =mean(UCR_RAPE), Average_Robbery =mean(UCR_ROBBERY), Average_Theft =mean(UCR_THEFT), Average_Total =mean(UCR_TOTAL))
 write.csv(average.crime, file = "wa.average.crime.csv")
+
 
 
 
