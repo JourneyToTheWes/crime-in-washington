@@ -17,6 +17,7 @@ ui <- fluidPage(
   sidebarLayout(
     
     sidebarPanel(
+
       conditionalPanel(condition = 'input.tabs == "Bar Graph" || input.tabs == "Pie Chart"',
         strong(h5("Bar Graph & Pie Chart Widgets")),
         selectInput('county', 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.condensed.data$county == "ADAMS"),
@@ -42,6 +43,10 @@ ui <- fluidPage(
           h5("Please Choose a County"),
           #Selects County 
           selectInput('county3', label = 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.data$county == "ADAMS")              
+        ),
+        
+        conditionalPanel(condition = 'input.tabs == "Map"',
+          radioButtons("checkbox", label = "Choose Crime", choices = list("Average_Population", "Average_Arson"))
         )
         
       ),
@@ -77,10 +82,15 @@ ui <- fluidPage(
         ),
                  
         tabPanel("Table", 
-               dataTableOutput("table.display")
+                 dataTableOutput("table.display")
+        ),
+        
+        tabPanel("Map",
+                 plotOutput("plot4", hover = "plot_hover"),
+                 dataTableOutput("table"),
+                 verbatimTextOutput("info"))
+        
         )
-        )
-    
     )
     )
 )
