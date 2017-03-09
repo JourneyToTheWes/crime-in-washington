@@ -11,8 +11,12 @@ crime.stats <- read.csv("wastate.csv")
 basic.crime.stats <- select(crime.stats, year, county, POP_F_TOTAL, POP_M_TOTAL, 13:213)
 #Filters out years from 1990-1999
 filter.years <- basic.crime.stats[!grepl("199", basic.crime.stats$year),]
+filter.years2012 <- filter.years[!grepl("2012", filter.years$year),]
+filter.years2013 <- filter.years2012[!grepl("2013", filter.years2012$year),]
+new.filter.years <- filter.years2013[!grepl("2014", filter.years2013$year),]
+
 #Sum of Population Population - MAY CHECK UP ON THIS
-filter.years <- mutate(filter.years, Total.Pop = POP_F_TOTAL + POP_M_TOTAL)
+new.filter.years <- mutate(filter.years, Total.Pop = POP_F_TOTAL + POP_M_TOTAL)
 #Select total crimes under UCR - United Crime Report
 crime.category <- select(filter.years, year, county, POP_F_TOTAL, POP_M_TOTAL,UCR_AG_ASSLT,UCR_ARSON,UCR_BURGLARY,UCR_MURDER,UCR_MVT,UCR_RAPE,UCR_ROBBERY,UCR_THEFT,UCR_TOTAL)
 filter <- mutate(crime.category, TOTAL.POP = POP_F_TOTAL + POP_M_TOTAL)
