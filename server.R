@@ -1,14 +1,16 @@
-library(shiny)
-library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(plotly)
+library(dplyr)
+library(shiny)
 
 wa.average.crime <- read.csv("data/wa.average.crime.csv")
 wa.average.crime.select <- filter(wa.average.crime, county != 'STATE')
 wa.average.select.crime<- filter(wa.average.crime, county != 'STATE') %>% select(county,Average_Population, Average_Assult,
                                                                                  Average_Arson, Average_Burglary, Average_Murder, Average_MVT, 
                                                                                  Average_Rape, Average_Robbery, Average_Theft)
+ucr.wa.crime.data <- read.csv("data/ucr.wa.crime.data.csv")
+wa.average.crime <- read.csv("data/wa.average.crime.csv")
 
 shinyServer(
   
@@ -111,6 +113,43 @@ shinyServer(
         
         return(p)
       })
+      
+  #Render a plotly display with boxplot to display min and max for each crime committed in each county
+  output$plot3 <- renderPlotly({
+    ucr.wa.crime.data.county <- filter(ucr.wa.crime.data, ucr.wa.crime.data$county == input$county2)
+    #Changing the colnames to something understandable
+    colnames(ucr.wa.crime.data.county) <- c('x','Year','County','Total Female Population','Total Male Population','Total Population','Aggrevated_Assault', 'Arson', 'Burglary', 'Murder', 'Motor_Vehicle_Theft', 'Rape', 'Robbery', 'Theft','Total_Crime')
+    
+    #If statement to determine which crime is being chosen
+    if(input$crime == "Aggrevated_Assault"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Aggrevated_Assault, type = "box")
+    } else if(input$crime == "Arson"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Arson, type = "box")
+    } else if(input$crime == "Burglary"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Burglary, type = "box")
+    } else if(input$crime == "Murder"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Murder, type = "box")
+    } else if(input$crime == "Motor_Vehicle_Theft"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Motor_Vehicle_Theft, type = "box")
+    } else if(input$crime == "Rape"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Rape, type = "box")
+    } else if(input$crime == "Robbery"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Robbery, type = "box")
+    } else if(input$crime == "Theft"){
+      p <- plot_ly(ucr.wa.crime.data.county, x = input$county2, y = ~Theft, type = "box")
+    }
+  })
+  
+  #Filter Dataset by county for table
+  filtered <- reactive({
+    data <- ucr.wa.crime.data %>% 
+      filter(county == input$county3)
+  })
+  
+  #Create Table
+  output$table.display <- renderDataTable({
+    output$mytable <- renderText(input$county3)
+    return(filtered())
+  }) 
 })
-
 

@@ -1,3 +1,4 @@
+library(dplyr)
 library(shiny)
 library(ggplot2)
 library(plotly)
@@ -10,8 +11,9 @@ wa.average.select.crime<- select(wa.average.crime, Average_Population,Average_As
                                  Average_Rape, Average_Robbery, Average_Theft)
 
 ui <- fluidPage(
+  #Title Panel
   titlePanel(title = "Crime in Washington"),
-  
+  #Includes Sidebar Panel
   sidebarLayout(
     
     sidebarPanel(
@@ -20,16 +22,29 @@ ui <- fluidPage(
         selectInput('county', 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.condensed.data$county == "ADAMS"),
         selectInput('year', 'Year',  ucr.wa.crime.data$year, selected = ucr.wa.crime.condensed.data$year == "2000")
       ),
-      #conditionalPanel(condition = 'input.tabs == "Pie Chart"',
-      #  strong(h5("Bar Graph & Pie Chart Widgets")),
-      #  selectInput('county', 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.condensed.data$county == "ADAMS"),
-      #  selectInput('year', 'Year',  ucr.wa.crime.data$year, selected = ucr.wa.crime.condensed.data$year == "2000")
-      #),
       #make options for users to choose what time of crime data he/she would like to see
       conditionalPanel(condition = 'input.tabs == "Population v. Crime"',
         selectInput('choice', label="Crime", choices= colnames(wa.average.select.crime))
-      )
-    ),
+      ),
+      
+      conditionalPanel(condition = 'input.tabs == "Boxplot"',
+        h5("Please Choose a County and Crime"),
+        #Selects County 
+        selectInput('county2', label = 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.data$county == "ADAMS"),
+      
+        #Selecting Which Crime
+        selectInput('crime', label = "Crime", choices = c('Aggrevated_Assault', 'Arson', 'Burglary', 'Murder', 
+                                                          'Motor_Vehicle_Theft', 'Rape', 'Robbery', 'Theft'), 
+                    #Initial Pick of Crime
+                    selected = 'Aggrevated_Assult')),
+        
+        conditionalPanel(condition = 'input.tabs == "Table"',
+          h5("Please Choose a County"),
+          #Selects County 
+          selectInput('county3', label = 'County', ucr.wa.crime.data$county, selected = ucr.wa.crime.data$county == "ADAMS")              
+        )
+        
+      ),
     
     mainPanel(h4("Crime in Washington is different in each county."),
       tabsetPanel(type = "tabs", id= 'tabs',
@@ -46,6 +61,7 @@ ui <- fluidPage(
                  p("The below visualization provides visualization for the number of crime occurances of each county in Washington State.
                   The plot changes depending on user's choice of crime"),
                  plotlyOutput('plot2', width = 1000, height = 800)),
+        
         tabPanel("Crime Scatter Plot", h5("Crime in Washington is different in each county."),
                  #output as plotly and formating the graph
                  p("The below visualization shows a plot of average population of each county in Wahsingont State
@@ -54,9 +70,19 @@ ui <- fluidPage(
                    the average crime. The more population in a county, the higer the crime rate"),
                  plotlyOutput('plot', width = 1000, height = 500),
                  p('The below visualization below draws a line to show the correlation'),
-                 plotOutput('plot1'))
-                )
-            )
+                 plotOutput('plot1')),
+        
+        tabPanel("Boxplot", h5("Average Crime In a County."),
+                 plotlyOutput("plot3")
+        ),
+                 
+        tabPanel("Table", 
+               dataTableOutput("table.display")
+        )
+        )
+    
     )
-  
+    )
 )
+
+
