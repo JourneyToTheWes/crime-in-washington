@@ -49,7 +49,7 @@ ui <- fluidPage(
         ),
         
         conditionalPanel(condition = 'input.tabs == "Map"',
-          radioButtons("checkbox", label = "Choose Option", choices = list("Average_Population", "Average_Arson"))
+          radioButtons("checkbox", label = "Choose Option", choices = colnames(wa.average.crime)[3:11])
         )
         
       ),

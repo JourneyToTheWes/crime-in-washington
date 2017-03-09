@@ -193,10 +193,90 @@ shinyServer(
         scale_fill_gradient(trans = "log10", low = "white", high = "red")+
         labs(title = "Total Crime Average")
       return(p)
-    } else {
+    } else if (input$checkbox == "Average_Arson"){
       p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
         coord_quickmap() + 
         geom_polygon(data = all.data, aes(fill = Average_Arson), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Assult") {
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Assult), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Burglary"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Burglary), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Murder"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Murder), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_MVT"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_MVT), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Rape"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Rape), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Robbery") {
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Robbery), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Theft"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Theft), color = "white")+
+        geom_polygon(color = "black", fill = NA)+
+        theme_bw() +
+        ditch_the_axes +
+        scale_fill_gradient(trans = "log10", low = "white", high = "red")+
+        labs(title = "Total Crime Average")
+      return(p)
+    } else if (input$checkbox == "Average_Total"){
+      p <- ggplot(data = washington.state, mapping = aes(x = long, y = lat, group = group)) + 
+        coord_quickmap() + 
+        geom_polygon(data = all.data, aes(fill = Average_Total), color = "white")+
         geom_polygon(color = "black", fill = NA)+
         theme_bw() +
         ditch_the_axes +
