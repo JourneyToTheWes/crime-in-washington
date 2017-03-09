@@ -3,9 +3,12 @@ library('ggplot2')
 library('dplyr')
 library('plotly')
 library('rsconnect')
+install.packages("maps")
+install.packages("mapdata")
 
-crime.stats <- read.csv("wastate.csv")
 
+crime.stats <- read.csv("data/wastate.csv", stringsAsFactors = FALSE)
+View(crime.stats)
 
 #Selecting needed data values
 basic.crime.stats <- select(crime.stats, year, county, POP_F_TOTAL, POP_M_TOTAL, 13:213)
@@ -27,6 +30,46 @@ average.crime <- crime.pop.front %>%
             Average_MVT =mean(UCR_MVT), Average_Rape =mean(UCR_RAPE), Average_Robbery =mean(UCR_ROBBERY), Average_Theft =mean(UCR_THEFT), Average_Total =mean(UCR_TOTAL))
 write.csv(average.crime, file = "wa.average.crime.csv")
 
+# state data
+states <- map_data("state")
+
+# gets only washington state
+wa_df <- subset(states, region == "washington")
+
+# county data
+counties <- map_data("county", fill = TRUE)
+
+# Only washington counties
+wa.counties <- subset(counties, region == "washington")
+
+# creates washington state map with county lines
+wa.map <- ggplot(data = wa_df, mapping = aes(x = long, y = lat, group = group)) + 
+  coord_quickmap() + 
+  geom_polygon(color = "black", fill = "gray")
+wa.map + geom_polygon(data = wa.counties, fill = NA, color = "white") +
+          geom_polygon(color = "black", fill = NA)
+
+# Combine county and average crime data
+colnames(wa.counties)[6] <- "county"
+average.crime$county <- tolower(average.crime$county)
+all.data <- inner_join(average.crime, wa.counties, by = "county")
+View(all.data)
+
+ditch_the_axes <- theme(
+  axis.text = element_blank(),
+  axis.line = element_blank(),
+  axis.ticks = element_blank(),
+  panel.border = element_blank(),
+  panel.grid = element_blank(),
+  axis.title = element_blank()
+)
+
+crime.by.county <- wa.map + 
+                    geom_polygon(data = all.data, aes(fill = Average_Total), color = "white")+
+                    geom_polygon(color = "black", fill = NA)+
+                    theme_bw() +
+                    ditch_the_axes+ 
+                    scale_fill_gradient(trans = "log10", low = "white", high = "red")
 
 
 

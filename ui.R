@@ -1,16 +1,19 @@
-library(shiny)
-library(ggplot2)
+library("shiny")
+library("ggplot2")
+
 
 shinyUI(fluidPage(
   titlePanel(title = "Crime in Washington"),
   
   sidebarLayout(
     sidebarPanel(
-      h5("hello")
+      radioButtons("checkbox", label = "Choose Crime", choices = list("Average_Population", "Average_Arson"))
     ),
     
-    mainPanel(h5("Crime in Washington is different in each county."),
-              
+    mainPanel(
+      plotOutput("plot", hover = "plot_hover"),
+      dataTableOutput("table"),
+      verbatimTextOutput("info")       
     )
   )
 ))
