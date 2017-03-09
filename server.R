@@ -23,10 +23,12 @@ shinyServer(
       
       pie.data <- gather(ucr.wa.crime.condensed.data.3, key = type.of.crime, value = crimes)
       
-      bp <- ggplot(data = pie.data) +
-        aes(x = type.of.crime, y = crimes, fill = type.of.crime) +
-        geom_bar(width = 1, stat = "identity")
-      bp + coord_flip() + xlab("Type of Crime") + ylab("Crime Amount")
+    bp <- plot_ly(pie.data, x = ~type.of.crime, y = ~crimes, type = "bar",
+                  marker = list(color = c("#FF0000", "#B700FF", "#2B00FF", "#00FF5A", "#FFF700", 
+                                  "#FFB300", "#FF00F3", "#00F7FF"))) %>%
+      layout(title = "Crime Rate for Individual County and Year",
+             xaxis = list(title = "Type of Crime"),
+             yaxis = list(title = "Amount of Crime"))
     })
     
     output$pie <- renderPlotly({
