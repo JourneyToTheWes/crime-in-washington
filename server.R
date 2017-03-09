@@ -22,12 +22,11 @@ server<- function(input, output){
       
       x<- select_(wa.average.select.crime, input$choice)
       
-      p <- ggplot(data = wa.average.select.crime, mapping = aes(x = select_(wa.average.select.crime, input$choice), y = county)) +
+      p <- ggplot(data = wa.average.select.crime, mapping = aes(x = select_(wa.average.select.crime, input$choice), y = county, color = county)) +
         geom_point() +
         xlab('Occurance')
       
       p <- ggplotly(p)
-      
       
       return(p)
     })

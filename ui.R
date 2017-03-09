@@ -22,9 +22,9 @@ ui <- fluidPage(
       
       h5("Crime in Washington is different in each county."),
       
-      plotlyOutput('plot'),
+      plotlyOutput('plot', width = 1000, height = 500),
       
-      plotlyOutput('plot2')
+      plotlyOutput('plot2', width = 1200, height = 500)
     )
   )
 )
