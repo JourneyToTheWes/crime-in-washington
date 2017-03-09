@@ -15,7 +15,7 @@ shinyUI(fluidPage(
       selectInput('year', 'Year',  ucr.wa.crime.data$year, selected = ucr.wa.crime.condensed.data$year == "2000")
     ),
     
-    mainPanel(h5("Crime in Washington is different in each county."),
+    mainPanel(h4("Crime in Washington is different in each county."),
       tabsetPanel(type = "tabs",
         tabPanel("Bar Graph", h4("Washington County Crime Rates"), 
                               tags$em(h5("This bar graph displays the crime rates given the individual county and year
