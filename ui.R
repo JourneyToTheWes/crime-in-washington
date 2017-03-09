@@ -46,7 +46,7 @@ ui <- fluidPage(
         ),
         
         conditionalPanel(condition = 'input.tabs == "Map"',
-          radioButtons("checkbox", label = "Choose Crime", choices = list("Average_Population", "Average_Arson"))
+          radioButtons("checkbox", label = "Choose Option", choices = list("Average_Population", "Average_Arson"))
         )
         
       ),
@@ -54,20 +54,22 @@ ui <- fluidPage(
     mainPanel(h4("Crime in Washington is different in each county."),
       tabsetPanel(type = "tabs", id= 'tabs',
         tabPanel("Bar Graph", h4("Washington County Crime Rates"), 
-                              tags$em(h5("This bar graph displays the crime rates given the individual county and year
-                                          in Washington.")),
+                 p("This bar graph displays the crime rates given the individual county and year
+                                          in Washington. The user is able to analyze the potential crime dangers
+                                          within their residing region in Washington."),
                  plotlyOutput('bar')),
         tabPanel("Pie Chart", h4("Washington County Crime Rates"),
-                            tags$em(h5("This pie chart displays the crime rates given the individual county and year
-                                       in Washington.")),
+                 p("This pie chart displays the crime rates given the individual county and year
+                                       in Washington. The pie chart allows the user to clearly visualize criminal risks
+                                       within their residing region in Washington."),
                  plotlyOutput('pie')),
         
-        tabPanel("Population v. Crime", h5("Crime in Washington is different in each county."),
+        tabPanel("Population v. Crime", h4("Washington County Crime Rates"),
                  p("The below visualization provides visualization for the number of crime occurances of each county in Washington State.
                   The plot changes depending on user's choice of crime"),
                  plotlyOutput('plot2', width = 1000, height = 800)),
         
-        tabPanel("Crime Scatter Plot", h5("Crime in Washington is different in each county."),
+        tabPanel("Crime Scatter Plot", h4("Washington County Crime Rates"),
                  #output as plotly and formating the graph
                  p("The below visualization shows a plot of average population of each county in Wahsingont State
                    V. average total crime in the county from year",em('2000'), "to year", em("2011"), ". The visualization
@@ -77,15 +79,26 @@ ui <- fluidPage(
                  p('The below visualization below draws a line to show the correlation'),
                  plotOutput('plot1')),
         
-        tabPanel("Boxplot", h5("Average Crime In a County."),
+        tabPanel("Boxplot", h4("Average Crime In a County."),
+                 p("The boxplot below displays the overall statistics of a specific crime given any county within the Washington state.
+                   This data visualization directly gives Washington residents information about the crimes being frequented in the premises
+                   in their own county and what they should look out for. The boxplot shows the minimum and max of a specific crime. Also, 
+                   it provides the median of the crime and shows outliers within the year 2000-2011."),
                  plotlyOutput("plot3")
         ),
                  
-        tabPanel("Table", 
+        tabPanel("Table", h4("Crime Statistics of Washington Counties"),
+                 p("The Table provides the exact statistics about each county and the crime. It also displays the female,male, and total population 
+                   within the years ranging from 2000-2011. The sliderinput filters out the interest of counties and provides search bars at the 
+                   bottom and at the top to filter out more specific elements the user requests."),
                  dataTableOutput("table.display")
         ),
         
-        tabPanel("Map",
+        tabPanel("Map", h4("Crime Density Map"),
+                 p("This visualization shows a map of Washington State and the
+                   density of the crime rates in each county. The map allows the
+                   users to relate to the crime dangers of the specific region 
+                   that the user is residing in Washington."), 
                  plotOutput("plot4", hover = "plot_hover"),
                  dataTableOutput("table"),
                  verbatimTextOutput("info"))
